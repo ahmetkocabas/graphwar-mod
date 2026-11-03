@@ -1,0 +1,1 @@
+java -jar globalServer.jar 26.175.161.1

@@ -1,0 +1,1 @@
+java -jar graphwar.jar 26.175.161.1
