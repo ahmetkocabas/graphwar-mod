@@ -96,6 +96,7 @@ The available commands are:
 * -stopshownext : Stops showing the next soldier to play.
 * -wrap : Enable wrap-around feature for y-axis.
 * -stopwrap : Disable wrap-around feature for y-axis.
+* -mmd
 
 Just type them on the game chat to use them.
 
