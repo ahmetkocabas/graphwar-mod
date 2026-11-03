@@ -2,6 +2,7 @@
 # TO-DO:
 
 * Reflection off of obstacles will be added. Obstacles would have coeffs or something.
+* Explosion size relative to function speed.
 
 # Graphwar Tutorial
 
