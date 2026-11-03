@@ -94,6 +94,8 @@ The available commands are:
 * -stopsayfunc : This will stop the functions from appearing on your chat after you used -sayfunc.
 * -shownext : This will highlight the next soldier to play for each player with a dark circle. This is useful to plan functions ahead of time.
 * -stopshownext : Stops showing the next soldier to play.
+* -wrap : Enable wrap-around feature for y-axis.
+* -stopwrap : Disable wrap-around feature for y-axis.
 
 Just type them on the game chat to use them.
 
