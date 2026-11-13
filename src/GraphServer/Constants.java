@@ -91,6 +91,12 @@ public class Constants
 	public static final int EXPLOSION_MAX_RADIUS = 36;
 	public static final int EXPLOSION_SPEED_SAMPLE_STEPS = 5;	// steps before impact used to measure the slope
 	
+	// Reflection: when enabled (chat command -reflect / -stopreflect), functions bounce off obstacles
+	// like a mirror, using the obstacle's surface angle at the collision point.
+	public static final int REFLECTION_MAX_BOUNCES = 5;			// after this many bounces the function explodes normally
+	public static final int REFLECTION_NORMAL_RADIUS = 6;		// pixel radius sampled to estimate the obstacle's surface angle
+	public static final int REFLECTION_MAX_ESCAPE_STEPS = 100;	// steps allowed to leave the obstacle after a bounce before exploding
+	
 	public static final int FUNCTION_VELOCITY = 1500;	//steps per second
 	public static final int FUNC_FADE_TIME = 1000;
 	public static final int NEXT_TURN_DELAY = 3000;	// Delay after functions hits target to change turn

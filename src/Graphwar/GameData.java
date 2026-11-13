@@ -68,6 +68,7 @@ public class GameData implements Runnable
 	
 	private boolean sayFunc;
 
+	public static boolean reflectionEnabled = false; // Toggled with -reflect / -stopreflect
 	public static boolean wrapEnabled = false; // Varsayılan olarak kapalı başlasın
 	
 	public GameData(Graphwar graphwar)
@@ -734,6 +735,22 @@ public class GameData implements Runnable
 					((PreGameScreen)graphwar.getUI().getScreen(Constants.PRE_GAME_SCREEN)).addChat(null, "SYSTEM: Wrap-around DE-ACTIVATED.");
 				else if(gameState == Constants.GAME)
 					((GameScreen)graphwar.getUI().getScreen(Constants.GAME_SCREEN)).addChat(null, "SYSTEM: Wrap-around DE-ACTIVATED.");
+			}
+			else if(msg.compareToIgnoreCase("-reflect")==0)
+			{
+				reflectionEnabled = true;
+				if(gameState == Constants.PRE_GAME)
+					((PreGameScreen)graphwar.getUI().getScreen(Constants.PRE_GAME_SCREEN)).addChat(null, "SYSTEM: Reflection ACTIVATED!");
+				else if(gameState == Constants.GAME)
+					((GameScreen)graphwar.getUI().getScreen(Constants.GAME_SCREEN)).addChat(null, "SYSTEM: Reflection ACTIVATED!");
+			}
+			else if(msg.compareToIgnoreCase("-stopreflect")==0)
+			{
+				reflectionEnabled = false;
+				if(gameState == Constants.PRE_GAME)
+					((PreGameScreen)graphwar.getUI().getScreen(Constants.PRE_GAME_SCREEN)).addChat(null, "SYSTEM: Reflection DE-ACTIVATED.");
+				else if(gameState == Constants.GAME)
+					((GameScreen)graphwar.getUI().getScreen(Constants.GAME_SCREEN)).addChat(null, "SYSTEM: Reflection DE-ACTIVATED.");
 			}
 		}
 	}

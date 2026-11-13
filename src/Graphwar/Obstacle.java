@@ -122,6 +122,40 @@ public class Obstacle
 		return terrain.getRGB(x, y) != -1;
 	}
 	
+	// Estimates the outward surface normal of the obstacle near (x, y) in terrain pixel coordinates
+	// (y pointing down). It looks at the obstacle pixels inside a small disk: they lie on the inner
+	// side of the surface, so the normal points away from their centre. Returns null when the
+	// surface direction can't be determined.
+	public double[] getSurfaceNormal(int x, int y, int radius)
+	{
+		double sumX = 0;
+		double sumY = 0;
+		
+		for(int dy=-radius; dy<=radius; dy++)
+		{
+			for(int dx=-radius; dx<=radius; dx++)
+			{
+				if(dx*dx + dy*dy > radius*radius)
+					continue;
+				
+				if(isObstaclePoint(x+dx, y+dy))
+				{
+					sumX += dx;
+					sumY += dy;
+				}
+			}
+		}
+		
+		double length = Math.sqrt(sumX*sumX + sumY*sumY);
+		
+		if(length < 1e-9)
+		{
+			return null;
+		}
+		
+		return new double[]{-sumX/length, -sumY/length};
+	}
+	
 	public void setExplosion(int x, int y, int radius)
 	{
 		expX = x;
