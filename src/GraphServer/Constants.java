@@ -26,12 +26,8 @@ public class Constants
 	
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-
-//	public static final int WIDTH = 1920;
-//	public static final int HEIGHT = 1080;
 	
 	public static final int FIELDS_HEIGHT = 25;
-//	public static final int FIELDS_HEIGHT = 26;
 	
 	public static final int TIMEOUT_CONNECTING = 10000;
 	public static final int TIMEOUT_KEEPALIVE = 5000;
@@ -85,6 +81,15 @@ public class Constants
 	public static final Font NAME_FONT = new Font("Sans", Font.PLAIN, 14);
 	
 	public static final int EXPLOSION_RADIUS = 12;
+	
+	// Speed-relative explosions: when a function hits an obstacle, the crater grows with the
+	// speed of the function at the impact point. Speed is sqrt(1 + slope^2), so a flat shot has
+	// speed 1 (normal crater) and steeper shots are faster.
+	// radius = EXPLOSION_RADIUS * (1 + EXPLOSION_SPEED_FACTOR*(speed - 1)), capped at EXPLOSION_MAX_RADIUS
+	public static final boolean EXPLOSION_SPEED_SCALING = true;
+	public static final double EXPLOSION_SPEED_FACTOR = 1.0;
+	public static final int EXPLOSION_MAX_RADIUS = 36;
+	public static final int EXPLOSION_SPEED_SAMPLE_STEPS = 5;	// steps before impact used to measure the slope
 	
 	public static final int FUNCTION_VELOCITY = 1500;	//steps per second
 	public static final int FUNC_FADE_TIME = 1000;

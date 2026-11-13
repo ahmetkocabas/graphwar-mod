@@ -1,1 +1,1 @@
-java -jar roomServer.jar 26.175.161.1
+java -jar roomServer.jar 26.141.247.254

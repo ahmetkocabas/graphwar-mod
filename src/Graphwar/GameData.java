@@ -1042,11 +1042,11 @@ public class GameData implements Runnable
 						
 			if(isFunctionReversed())
 			{
-				obstacle.setExplosion(Constants.PLANE_LENGTH - (int)function.getLastX(), (int)function.getLastY(), Constants.EXPLOSION_RADIUS);
+				obstacle.setExplosion(Constants.PLANE_LENGTH - (int)function.getLastX(), (int)function.getLastY(), function.getExplosionRadius());
 			}
 			else
 			{
-				obstacle.setExplosion((int)function.getLastX(), (int)function.getLastY(), Constants.EXPLOSION_RADIUS);
+				obstacle.setExplosion((int)function.getLastX(), (int)function.getLastY(), function.getExplosionRadius());
 			}
 			
 			obstacle.explodePoint();

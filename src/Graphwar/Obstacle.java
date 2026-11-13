@@ -113,6 +113,15 @@ public class Obstacle
 		return false;
 	}
 	
+	// True only when the point is inside the plane and on an obstacle (not a border hit)
+	public boolean isObstaclePoint(int x, int y)
+	{
+		if(x<0 || x>=Constants.PLANE_LENGTH || y<0 || y>=Constants.PLANE_HEIGHT)
+			return false;
+		
+		return terrain.getRGB(x, y) != -1;
+	}
+	
 	public void setExplosion(int x, int y, int radius)
 	{
 		expX = x;

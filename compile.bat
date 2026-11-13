@@ -8,4 +8,4 @@ robocopy bin/RoomServer RoomServer /e
 jar cfe graphwar.jar Graphwar.Graphwar GraphServer Graphwar rsc
 jar cfe roomServer.jar RoomServer.RoomServer GraphServer RoomServer rsc
 jar cfe globalServer.jar GlobalServer.GlobalServer GraphServer GlobalServer rsc
-java -jar graphwar.jar 26.175.161.1
+java -jar graphwar.jar 26.141.247.254

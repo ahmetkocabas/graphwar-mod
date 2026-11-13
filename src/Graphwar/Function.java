@@ -38,6 +38,13 @@ public class Function
 	private double lastX;
 	private double lastY;
 	
+	private boolean hitObstacle;
+	private double impactSpeed;
+	
+	// Vertical wrap-around range in game coordinates: y is wrapped into [-15, +15)
+	private static final double PLANE_HEIGHT = 15.0;
+	private static final double PLANE_LENGTH = 30.0;
+	
 	Function(String str) throws MalformedFunction
 	{		
 		strFunc = str;
@@ -322,6 +329,7 @@ public class Function
 		
 		lastX = Constants.PLANE_LENGTH*valuesX[numSteps-1]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_LENGTH/2;
 		lastY = -Constants.PLANE_LENGTH*valuesY[numSteps-1]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_HEIGHT/2;
+		processImpact(obstacle, inverted);
 	
 		//for(int i=0; i<valuesX.length; i++)
 		//{			
@@ -498,6 +506,7 @@ public class Function
 			
 		lastX = Constants.PLANE_LENGTH*valuesX[numSteps-1]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_LENGTH/2;;
 		lastY = -Constants.PLANE_LENGTH*valuesY[numSteps-1]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_HEIGHT/2;
+		processImpact(obstacle, inverted);
 		
 	}
 	
@@ -692,8 +701,112 @@ public class Function
 		
 		lastX = Constants.PLANE_LENGTH*valuesX[numSteps-1]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_LENGTH/2;;
 		lastY = -Constants.PLANE_LENGTH*valuesY[numSteps-1]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_HEIGHT/2;
+		processImpact(obstacle, inverted);
 
 				
+	}
+	
+	// Finds out if the function ended on an obstacle and how fast it was going there.
+	// Speed is measured as sqrt(1 + slope^2): x always advances at the same rate,
+	// so the steeper the function is at the impact point, the faster it is moving.
+	private void processImpact(Obstacle obstacle, boolean inverted)
+	{
+		hitObstacle = false;
+		impactSpeed = 1;
+		
+		int end = numSteps;
+		
+		if(end >= Constants.FUNC_MAX_STEPS)
+		{
+			return;
+		}
+		
+		if(Double.isNaN(valuesY[end]) || Double.isInfinite(valuesY[end]))
+		{
+			return;
+		}
+		
+		double x = Constants.PLANE_LENGTH*valuesX[end]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_LENGTH/2;
+		double y = -Constants.PLANE_LENGTH*valuesY[end]/Constants.PLANE_GAME_LENGTH + Constants.PLANE_HEIGHT/2;
+		
+		if(inverted)
+		{
+			x = Constants.PLANE_LENGTH - x;
+		}
+		
+		if(obstacle.isObstaclePoint((int)x, (int)y) == false)
+		{
+			return;
+		}
+		
+		hitObstacle = true;
+		
+		int start = end - Constants.EXPLOSION_SPEED_SAMPLE_STEPS;
+		if(start < 0)
+		{
+			start = 0;
+		}
+		
+		double dx = valuesX[end] - valuesX[start];
+		double dy = 0;
+		
+		for(int i=start+1; i<=end; i++)
+		{
+			double stepY = valuesY[i] - valuesY[i-1];
+			
+			if(GameData.wrapEnabled)
+			{
+				// A jump across the wrap border is not real movement
+				if(stepY > PLANE_LENGTH/2)
+					stepY -= PLANE_LENGTH;
+				else if(stepY < -PLANE_LENGTH/2)
+					stepY += PLANE_LENGTH;
+			}
+			
+			dy += stepY;
+		}
+		
+		if(dx > 0)
+		{
+			double slope = dy/dx;
+			impactSpeed = Math.sqrt(1 + slope*slope);
+		}
+		
+		if(Double.isNaN(impactSpeed))
+		{
+			impactSpeed = 1;
+		}
+	}
+	
+	public boolean hasHitObstacle()
+	{
+		return hitObstacle;
+	}
+	
+	public double getImpactSpeed()
+	{
+		return impactSpeed;
+	}
+	
+	public int getExplosionRadius()
+	{
+		if(Constants.EXPLOSION_SPEED_SCALING == false || hitObstacle == false)
+		{
+			return Constants.EXPLOSION_RADIUS;
+		}
+		
+		double radius = Constants.EXPLOSION_RADIUS*(1 + Constants.EXPLOSION_SPEED_FACTOR*(impactSpeed - 1));
+		
+		if(radius > Constants.EXPLOSION_MAX_RADIUS)
+		{
+			radius = Constants.EXPLOSION_MAX_RADIUS;
+		}
+		if(radius < Constants.EXPLOSION_RADIUS)
+		{
+			radius = Constants.EXPLOSION_RADIUS;
+		}
+		
+		return (int)Math.round(radius);
 	}
 	
 	public double getLastX()

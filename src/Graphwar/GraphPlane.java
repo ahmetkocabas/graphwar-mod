@@ -359,6 +359,9 @@ public class GraphPlane extends JPanel implements ActionListener
 				}
 
 				//path.curve
+			} else {
+				path.lineTo(x, y);
+			}
 
 		}	
 		lastStepDrawn = numDrawSteps-1;
@@ -412,8 +415,15 @@ public class GraphPlane extends JPanel implements ActionListener
 			
 			Function function = graphwar.getGameData().getFunction();
 			
-			int width = explosionImages[0].getWidth(null);
-			int height = explosionImages[0].getHeight(null);
+			// Bigger (faster) explosions get a bigger animation
+			double explosionScale = ((double)graphwar.getGameData().getObstacle().getExplosionRadius())/Constants.EXPLOSION_RADIUS;
+			if(explosionScale < 1)
+			{
+				explosionScale = 1;
+			}
+			
+			int width = (int)(explosionImages[0].getWidth(null)*explosionScale);
+			int height = (int)(explosionImages[0].getHeight(null)*explosionScale);
 			
 			int drawX = (int) (function.getLastX());
 			int drawY = (int) (function.getLastY() - height/2);
@@ -451,7 +461,7 @@ public class GraphPlane extends JPanel implements ActionListener
 				}
 				else
 				{						
-					g.drawImage(explosionImages[i], drawX, drawY, null);					
+					g.drawImage(explosionImages[i], drawX, drawY, width, height, null);					
 					
 					return;
 				}
